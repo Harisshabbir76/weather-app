@@ -1,21 +1,28 @@
 // utils/localStorageUtils.js
+import API from './api';
 
-const FAVORITES_KEY = 'favoriteCities';
-
-export const getFavorites = () => {
-  const data = localStorage.getItem(FAVORITES_KEY);
-  return data ? JSON.parse(data) : [];
-};
-
-export const addFavorite = (city) => {
-  const favorites = getFavorites();
-  if (!favorites.includes(city)) {
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites, city]));
+export const addFavorite = async (city) => {
+  try {
+    await API.post('/favorites', { city });
+  } catch (err) {
+    console.error('Error adding favorite:', err);
   }
 };
 
-export const removeFavorite = (city) => {
-  const favorites = getFavorites();
-  const updated = favorites.filter(c => c !== city);
-  localStorage.setItem(FAVORITES_KEY, JSON.stringify(updated));
+export const getFavorites = async () => {
+  try {
+    const res = await API.get('/favorites');
+    return res.data; // Should be array of cities
+  } catch (err) {
+    console.error('Error fetching favorites:', err);
+    return [];
+  }
+};
+
+export const removeFavorite = async (city) => {
+  try {
+    await API.delete(`/favorites/${encodeURIComponent(city)}`);
+  } catch (err) {
+    console.error('Error removing favorite:', err);
+  }
 };

@@ -1,20 +1,30 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import Home from './pages/Home';
 import SearchPage from './pages/SearchPage';
+import MapView from './components/MapView';
+import LoginPage from './pages/Login';
+import SignupPage from './pages/Signup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './App.css';
 
 const App = () => {
+  const isLoggedIn = !!localStorage.getItem('token');
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.reload(); // Reload to update UI
+  };
+
   return (
     <Router>
       <Navbar expand="lg" className="dusk-navbar">
         <Container>
           <Navbar.Brand as={Link} to="/" className="text-dusk-accent">
             <i className="bi bi-cloud-sun-fill me-2" style={{ color: '#4fc3f7' }}></i>
-            <span style={{ 
+            <span style={{
               background: 'linear-gradient(to right, #4fc3f7, #64ffda)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -34,6 +44,27 @@ const App = () => {
                 <i className="bi bi-search me-2" style={{ color: '#4fc3f7' }}></i>
                 Search
               </Nav.Link>
+              <Nav.Link as={Link} to="/map" className="nav-link-weather">
+                <i className="bi bi-geo-alt me-2" style={{ color: '#4fc3f7' }}></i>
+                Map
+              </Nav.Link>
+              {!isLoggedIn ? (
+                <>
+                  <Nav.Link as={Link} to="/login" className="nav-link-weather">
+                    <i className="bi bi-box-arrow-in-right me-2" style={{ color: '#4fc3f7' }}></i>
+                    Login
+                  </Nav.Link>
+                  <Nav.Link as={Link} to="/signup" className="nav-link-weather">
+                    <i className="bi bi-person-plus me-2" style={{ color: '#4fc3f7' }}></i>
+                    Signup
+                  </Nav.Link>
+                </>
+              ) : (
+                <Nav.Link onClick={handleLogout} className="nav-link-weather">
+                  <i className="bi bi-box-arrow-right me-2" style={{ color: '#4fc3f7' }}></i>
+                  Logout
+                </Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -43,6 +74,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/map" element={<MapView />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
       </Container>
 
