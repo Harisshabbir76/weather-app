@@ -4,7 +4,7 @@ import { Container, Form, Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 function Signup() {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ name: '', age: '', email: '', password: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -43,6 +43,33 @@ function Signup() {
           </div>
           
           <Form onSubmit={handleSubmit}>
+            {/* Name */}
+            <Form.Group className="mb-3">
+              <Form.Label className="form-label">Name</Form.Label>
+              <Form.Control
+                name="name"
+                type="text"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                className="form-input"
+              />
+            </Form.Group>
+
+            {/* Age */}
+            <Form.Group className="mb-3">
+              <Form.Label className="form-label">Age</Form.Label>
+              <Form.Control
+                name="age"
+                type="number"
+                value={formData.age}
+                onChange={handleChange}
+                required
+                className="form-input"
+              />
+            </Form.Group>
+
+            {/* Email */}
             <Form.Group className="mb-3">
               <Form.Label className="form-label">Email</Form.Label>
               <Form.Control
@@ -55,6 +82,7 @@ function Signup() {
               />
             </Form.Group>
             
+            {/* Password */}
             <Form.Group className="mb-4">
               <Form.Label className="form-label">Password</Form.Label>
               <Form.Control
