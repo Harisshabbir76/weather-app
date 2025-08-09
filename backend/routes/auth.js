@@ -3,24 +3,38 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../Models/User');
 
-const JWT_SECRET =process.env.JWT_SECRET; // In production, use env variable
+const JWT_SECRET =process.env.JWT_SECRET; 
 
 // Signup Route
 router.post('/signup', async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    let user = await User.findOne({ email });
-    if (user) return res.status(400).json({ msg: 'User already exists' });
+  const { name, age, email, password } = req.body;
 
-    user = new User({ email, password });
+  try {
+   
+    if (!name || !age || !email || !password) {
+      return res.status(400).json({ msg: 'All fields are required' });
+    }
+
+    
+    let user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ msg: 'User already exists' });
+    }
+
+    
+    user = new User({ name, age, email, password });
     await user.save();
 
+    
     const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: '7d' });
     res.json({ token });
+
   } catch (err) {
+    console.error(err);
     res.status(500).send('Server Error');
   }
 });
+
 
 // Login Route
 router.post('/login', async (req, res) => {
