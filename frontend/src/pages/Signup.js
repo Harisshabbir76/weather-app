@@ -20,7 +20,7 @@ function Signup() {
       alert('Signup successful. Please log in.');
       navigate('/login');
     } catch (err) {
-      console.error(err);
+      console.error(err.response?.data);
       setError(err.response?.data?.message || 'Signup failed');
     }
   };
@@ -45,53 +45,49 @@ function Signup() {
           <Form onSubmit={handleSubmit}>
             {/* Name */}
             <Form.Group className="mb-3">
-              <Form.Label className="form-label">Name</Form.Label>
+              <Form.Label>Name</Form.Label>
               <Form.Control
                 name="name"
                 type="text"
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="form-input"
               />
             </Form.Group>
 
             {/* Age */}
             <Form.Group className="mb-3">
-              <Form.Label className="form-label">Age</Form.Label>
+              <Form.Label>Age</Form.Label>
               <Form.Control
                 name="age"
                 type="number"
                 value={formData.age}
                 onChange={handleChange}
                 required
-                className="form-input"
               />
             </Form.Group>
 
             {/* Email */}
             <Form.Group className="mb-3">
-              <Form.Label className="form-label">Email</Form.Label>
+              <Form.Label>Email</Form.Label>
               <Form.Control
                 name="email"
                 type="email"
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="form-input"
               />
             </Form.Group>
             
             {/* Password */}
             <Form.Group className="mb-4">
-              <Form.Label className="form-label">Password</Form.Label>
+              <Form.Label>Password</Form.Label>
               <Form.Control
                 name="password"
                 type="password"
                 value={formData.password}
                 onChange={handleChange}
                 required
-                className="form-input"
               />
             </Form.Group>
             
@@ -100,7 +96,6 @@ function Signup() {
             <div className="d-grid gap-2">
               <Button 
                 type="submit" 
-                className="auth-btn"
                 style={{
                   background: 'linear-gradient(to right, #4fc3f7, #64ffda)',
                   border: 'none',
@@ -112,15 +107,11 @@ function Signup() {
             </div>
             
             <div className="text-center mt-3">
-              <p className="auth-link">
+              <p>
                 Already have an account?{' '}
                 <span 
                   onClick={() => navigate('/login')}
-                  style={{
-                    color: '#4fc3f7',
-                    cursor: 'pointer',
-                    fontWeight: '500'
-                  }}
+                  style={{ color: '#4fc3f7', cursor: 'pointer', fontWeight: '500' }}
                 >
                   Log In
                 </span>
